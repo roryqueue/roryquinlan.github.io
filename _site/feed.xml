@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Your awesome title</title>
+    <description>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
+</description>
+    <link>http://yourdomain.com/</link>
+    <atom:link href="http://yourdomain.com/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Wed, 03 Jun 2015 18:38:11 -0400</pubDate>
+    <lastBuildDate>Wed, 03 Jun 2015 18:38:11 -0400</lastBuildDate>
+    <generator>Jekyll v2.5.3</generator>
+    
+      <item>
+        <title>Functional Thinking in Python</title>
+        <description>&lt;h2 id=&quot;what-is-a-function&quot;&gt;What is a function?&lt;/h2&gt;
+
+&lt;p&gt;Mathematically, and in purely functional programming, a function relates an input to an output. You can replace a function with its value without altering the program. This is called referential transparency.&lt;/p&gt;
+
+&lt;p&gt;In imperative languages like Python, functions can specify behavior unrelated to their classical output (return values). However, simply breaking a piece of code into one-off functions and calling those functions in sequence provides limited benefit. More powerful (and more fun!) uses of Python functions emerge when you can think a little bit like a functional programmer.&lt;/p&gt;
+
+&lt;h2 id=&quot;back-to-basics-what-exactly-is-a-python-function&quot;&gt;Back to basics: what &lt;em&gt;exactly&lt;/em&gt; is a Python function?&lt;/h2&gt;
+
+&lt;p&gt;A Python function an object type just like &lt;code&gt;list&lt;/code&gt;, &lt;code&gt;dict&lt;/code&gt;, and &lt;code&gt;string&lt;/code&gt;. Objects of the &lt;code&gt;function&lt;/code&gt; class differentiate from those of, for instance, the &lt;code&gt;list&lt;/code&gt; class in that they are callable. This simply means they are instantiated with the &lt;strong&gt;call&lt;/strong&gt; method defined. Functions are called when you reference them with trailing parentheses.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;yelling&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;alalalalala&amp;#39;&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;yelling&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#=&amp;gt; alalalalala&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;yelling&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#=&amp;gt; &amp;lt;function yelling at 0x1074ea848&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;In the first example, the function is called before being passed to &lt;code&gt;print&lt;/code&gt;, so its return value is printed. In the second, the function is not called before being passed to print, so a representation of the function object is printed. The above can be written more verbosely as:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;yelling&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;alalalalala&amp;#39;&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;yelling&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;__call__&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#=&amp;gt; alalalalala&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;yelling&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;__repr__&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#=&amp;gt; &amp;lt;function yelling at 0x1074ea848&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;inputs-and-outputs&quot;&gt;Inputs and outputs&lt;/h2&gt;
+
+&lt;p&gt;A Python function can (more or less) take any number of arguments of any class or classes and return any number of arguments of any class or classes. Generally, arguments to a Python function must either have default values specified or be considered mandatory. Mandatory arguments must always come before arguments with default values.&lt;/p&gt;
+
+&lt;h2 id=&quot;args-and-kwargs&quot;&gt;Args and kwargs&lt;/h2&gt;
+
+&lt;p&gt;Args and kwargs are a feature of the function class that facilitates passing arbitrary variables. They are the only exceptions to the above input rules. The names &lt;em&gt;args&lt;/em&gt; and &lt;em&gt;kwargs&lt;/em&gt; are convention but not mandatory. The important parts are the prefixes &lt;code&gt;*&lt;/code&gt; and &lt;code&gt;**&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;If you include &lt;code&gt;*args&lt;/code&gt; in your function definition, the function will grab any arguments listed when calling the function that don’t have specified keys, and pass them into your function as a tuple. Similarly, ‘**kwargs’ will grab . Within the function, these are just a normal tuple and dict, with no special behavior:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;explain&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;kwargs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;__class__&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;kwargs&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;__class__&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;explain&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#=&amp;gt; &amp;lt;type &amp;#39;tuple&amp;#39;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#=&amp;gt; &amp;lt;type &amp;#39;dict&amp;#39;&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Check out the &lt;a href=&quot;http://jekyllrb.com&quot;&gt;Jekyll docs&lt;/a&gt; for more info on how to get the most out of Jekyll. File all bugs/feature requests at &lt;a href=&quot;https://github.com/jekyll/jekyll&quot;&gt;Jekyll’s GitHub repo&lt;/a&gt;. If you have questions, you can ask them on &lt;a href=&quot;https://github.com/jekyll/jekyll-help&quot;&gt;Jekyll’s dedicated Help repository&lt;/a&gt;.&lt;/p&gt;
+
+</description>
+        <pubDate>Wed, 03 Jun 2015 10:57:16 -0400</pubDate>
+        <link>http://yourdomain.com/jekyll/update/2015/06/03/welcome-to-jekyll.html</link>
+        <guid isPermaLink="true">http://yourdomain.com/jekyll/update/2015/06/03/welcome-to-jekyll.html</guid>
+        
+        
+        <category>jekyll</category>
+        
+        <category>update</category>
+        
+      </item>
+    
+  </channel>
+</rss>
