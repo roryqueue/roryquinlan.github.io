@@ -42,8 +42,6 @@
         
           
         
-          
-        
       </div>
     </nav>
 
@@ -66,9 +64,13 @@
 
 <p>Mathematically, and in purely functional programming, a function relates an input to an output. You can replace a function with its value without altering the program. This is called referential transparency.</p>
 
+<p><img src="/images/math.png" alt="Mathematical funcion" /></p>
+
 <p>In imperative languages like Python, functions can specify behavior unrelated to their classical output (return values). However, simply breaking a piece of code into one-off functions and calling those functions in sequence provides limited benefit. More powerful (and more fun!) uses of Python functions emerge when you can think a little bit like a functional programmer.</p>
 
-<h2 id="back-to-basics-what-exactly-is-a-python-function">Back to basics: what <em>exactly</em> is a Python function?</h2>
+<p><img src="/images/python.png" alt="Python funcion" /></p>
+
+<h2 id="what-exactly-is-a-python-function">What <em>exactly</em> is a Python function?</h2>
 
 <p>A Python function an object type just like <code>list</code>, <code>dict</code>, and <code>string</code>. Objects of the <code>function</code> class differentiate from those of, for instance, the <code>list</code> class in that they are callable. This simply means they are instantiated with the <strong>call</strong> method defined. Functions are called when you reference them with trailing parentheses.</p>
 
@@ -100,7 +102,7 @@
 
 <p>Args and kwargs are a feature of the function class that facilitates passing arbitrary variables. They are the only exceptions to the above input rules. The names <em>args</em> and <em>kwargs</em> are convention but not mandatory. The important parts are the prefixes <code>*</code> and <code>**</code>.</p>
 
-<p>If you include <code>*args</code> in your function definition, the function will grab any arguments listed when calling the function that don’t have specified keys, and pass them into your function as a tuple. Similarly, ‘**kwargs’ will grab . Within the function, these are just a normal tuple and dict, with no special behavior:</p>
+<p>If you include <code>*args</code> in your function definition, the function will grab any arguments listed when calling the function that don’t have specified keys, and pass them into your function as a tuple. Similarly, <code>**kwargs</code> will grab all keyword arguments (<code>xxx=yyy</code>) and pass them into your function together as a dict. Within the function, these are just a normal tuple and dict, with no special behavior:</p>
 
 <div class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">explain</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="k">print</span> <span class="n">args</span><span class="o">.</span><span class="n">__class__</span>
@@ -110,8 +112,110 @@
 <span class="c">#=&gt; &lt;type &#39;tuple&#39;&gt;</span>
 <span class="c">#=&gt; &lt;type &#39;dict&#39;&gt;</span></code></pre></div>
 
-<p>Check out the <a href="http://jekyllrb.com">Jekyll docs</a> for more info on how to get the most out of Jekyll. File all bugs/feature requests at <a href="https://github.com/jekyll/jekyll">Jekyll’s GitHub repo</a>. If you have questions, you can ask them on <a href="https://github.com/jekyll/jekyll-help">Jekyll’s dedicated Help repository</a>.</p>
+<p>Args and kwargs can be very useful when writing higher order functions. A higher order function is any function that takes another function as an argument and/or returns a function. Functions on functions on functions. Here’s an example of a higher order function I found useful in the wild:</p>
 
+<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">pyfuake</span>
+
+<span class="k">class</span> <span class="nc">Fuake</span><span class="p">(</span><span class="n">pyfuake</span><span class="o">.</span><span class="n">Fuake</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">after_execution</span><span class="p">(</span><span class="n">fuake</span><span class="p">,</span> <span class="n">execution_id</span><span class="p">,</span> <span class="n">function</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">execution</span> <span class="o">=</span> <span class="n">fuake</span><span class="o">.</span><span class="n">get_execution</span><span class="p">(</span><span class="n">execution_id</span><span class="p">)</span>
+
+        <span class="k">print</span> <span class="s">&#39;EXECUTION </span><span class="si">%d</span><span class="s"> STATUS: </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">execution_id</span><span class="p">,</span> <span class="n">execution</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;status&#39;</span><span class="p">))</span>
+        <span class="k">while</span> <span class="n">execution</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;status&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="s">&#39;finished&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">execution</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;status&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s">&#39;error&#39;</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">FuakeAPIException</span><span class="p">,</span> <span class="s">&#39;api error: </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">execution</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;explain_error&#39;</span><span class="p">)</span>
+
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+            <span class="n">previous_status</span> <span class="o">=</span> <span class="n">execution</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;status&#39;</span><span class="p">)</span>
+            <span class="n">execution</span> <span class="o">=</span> <span class="n">fuake</span><span class="o">.</span><span class="n">get_execution</span><span class="p">(</span><span class="n">execution_id</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">execution</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;status&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="n">previous_status</span><span class="p">:</span>
+                <span class="k">print</span> <span class="s">&#39;EXECUTION </span><span class="si">%d</span><span class="s"> STATUS: </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">execution_id</span><span class="p">,</span> <span class="n">execution</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;status&#39;</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">function</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code></pre></div>
+
+<p>This Fuake method extends the existing execution method to wait for an execution to finish, then execute an arbitrary function when it is done. This ability could be useful on its own, and also allows us to easily add a blocking execution method like this:</p>
+
+<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">execute_returning_results</span><span class="p">(</span><span class="n">fuake</span><span class="p">,</span> <span class="n">query_id</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="n">execution</span> <span class="o">=</span> <span class="n">fuake</span><span class="o">.</span><span class="n">create_execution</span><span class="p">(</span><span class="n">query_id</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">fuake</span><span class="o">.</span><span class="n">after_execution</span><span class="p">(</span><span class="n">execution</span><span class="p">[</span><span class="s">&#39;id&#39;</span><span class="p">],</span>
+        <span class="k">lambda</span> <span class="k">exec</span><span class="p">:</span> <span class="p">[</span><span class="n">row</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">fuake</span><span class="o">.</span><span class="n">get_results</span><span class="p">(</span><span class="k">exec</span><span class="p">)],</span>
+        <span class="n">execution</span><span class="p">[</span><span class="s">&#39;id&#39;</span><span class="p">],</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span></code></pre></div>
+
+<p><em>^^Source <a href="https://git.adverplex.com/rquinlan/pyquake/blob/master/pyquake/execution.py">here</a>.</em></p>
+
+<h2 id="map-and-reduce">Map and reduce</h2>
+
+<p>Map and reduce are commonly used functional programming techniques. They are part of the standard library available to you in Python, but let’s look at simplified versions of their full Python definitions to get a better understanding:</p>
+
+<p>Map takes a function and applies it to every value in an iterable:</p>
+
+<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">simple_map</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="n">iterable</span><span class="p">):</span>
+  	<span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+  	<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">iterable</span><span class="p">:</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">function</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span>
+  	<span class="k">return</span> <span class="n">result</span></code></pre></div>
+
+<p>Reduce takes a function and uses it to reduce an iterable to a single value:</p>
+
+<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">simple_reduce</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="n">iterable</span><span class="p">):</span>
+    <span class="n">accum_value</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">iterable</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">iterable</span><span class="p">:</span>
+        <span class="n">accum_value</span> <span class="o">=</span> <span class="n">function</span><span class="p">(</span><span class="n">accum_value</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">accum_value</span></code></pre></div>
+
+<h2 id="decorators">Decorators</h2>
+
+<p>A Python decorator is a function (actually any callable object!) that takes another function, and replaces it with a third function. In effect, you are defining a function adjustment that can apply to many functions.</p>
+
+<p>Here is a simple decorator that checks whether the output of a Champagne renderer is valid, and cancels the queuing of the message if it is invalid.</p>
+
+<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">input_check</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">wrapped_f</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+  	<span class="n">params</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+  	<span class="c">#check that everything is there!</span>
+  	<span class="k">if</span> <span class="ow">not</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;headers&#39;</span><span class="p">):</span>
+  		<span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;No message headers, aborting render.&#39;</span><span class="p">)</span>
+  		<span class="k">return</span> <span class="bp">None</span>
+  	<span class="k">elif</span> <span class="ow">not</span> <span class="n">params</span><span class="p">[</span><span class="s">&#39;headers&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;List-Unsubscribe&#39;</span><span class="p">):</span>
+  		<span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;No List-Unsubscribe URL in message headers, aborting render.&#39;</span><span class="p">)</span>
+  		<span class="k">return</span> <span class="bp">None</span>
+  	<span class="k">elif</span> <span class="ow">not</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;meta&#39;</span><span class="p">):</span>
+  		<span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;No meta, aborting render.&#39;</span><span class="p">)</span>
+  		<span class="k">return</span> <span class="bp">None</span>
+  	<span class="k">elif</span> <span class="ow">not</span> <span class="n">params</span><span class="p">[</span><span class="s">&#39;meta&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;topic&#39;</span><span class="p">):</span>
+  		<span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;No topic in meta, aborting render.&#39;</span><span class="p">)</span>
+  		<span class="k">return</span> <span class="bp">None</span>
+  	<span class="k">elif</span> <span class="ow">not</span> <span class="n">params</span><span class="p">[</span><span class="s">&#39;meta&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;template&#39;</span><span class="p">):</span>
+  		<span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;No template in meta, aborting render.&#39;</span><span class="p">)</span>
+  		<span class="k">return</span> <span class="bp">None</span>
+  	<span class="k">elif</span> <span class="ow">not</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;html&#39;</span><span class="p">):</span>
+              	<span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;No HTML email template, aborting render.&#39;</span><span class="p">)</span>
+              	<span class="k">return</span> <span class="bp">None</span>
+  	<span class="k">elif</span> <span class="ow">not</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;subject&#39;</span><span class="p">):</span>
+  		<span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;No subject template, aborting render.&#39;</span><span class="p">)</span>
+  		<span class="k">return</span> <span class="bp">None</span>
+  	<span class="k">elif</span> <span class="s">&#39;\{\{&#39;</span> <span class="ow">in</span> <span class="n">params</span><span class="p">[</span><span class="s">&#39;subject&#39;</span><span class="p">]:</span>
+  		<span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;Subject template not properly rendered, aborting render.&#39;</span><span class="p">)</span>
+  		<span class="k">return</span> <span class="bp">None</span>
+  	<span class="k">elif</span> <span class="ow">not</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;taxonomy&#39;</span><span class="p">):</span>
+  		<span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;No taxonomy, aborting render.&#39;</span><span class="p">)</span>
+  		<span class="k">return</span> <span class="bp">None</span>
+  	<span class="k">elif</span> <span class="ow">not</span> <span class="n">params</span><span class="p">[</span><span class="s">&#39;taxonomy&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;advertiser&#39;</span><span class="p">):</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;No advertiser in taxonomy, aborting render.&#39;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="bp">None</span>
+
+  	<span class="k">return</span> <span class="n">params</span>
+
+  <span class="k">return</span> <span class="n">wrapped_f</span></code></pre></div>
+
+<p>Now we can apply the decorator to any of our render functions with <code>@</code>:</p>
+
+<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="nd">@input_check</span>
+<span class="k">def</span> <span class="nf">render</span><span class="p">():</span>
+    <span class="o">...</span></code></pre></div>
+
+<p><em>^^Source <a href="https://git.adverplex.com/social/social_mail/blob/master/social_mail/scripts/renderers.py">here</a>.</em></p>
 
   </article>
 
